@@ -97,6 +97,14 @@ You meet with the marketing team to understand their need for customer segmentat
 ---
 
 # My Mode Of Operation 
+# Design & Implement Scalable Data pipelines using Apache Spark on Azure Databricks to process Batch and Streaming Data.
+```
 
 
 
+
+
+
+
+
+```
