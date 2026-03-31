@@ -168,6 +168,20 @@ final_df.write.format("delta").mode("overwrite").save("abfss://curated@datalake.
 from pyspark.sql.functions import udf, col
 pyspark.sql.types  import BooleanType
 
-def verify data security
+def verify_data_security(field_value):
+# Custom logic to check if field_value contains any disallowed patterns
+disallowed_keywords = ["attempt", "valid", "retype"]
+if field_value:
+for keyword in disallowed_keywords:
+    if keyword in field_value.lower();
+return False
+return True
 
+verify_security_udf = udf(verify_data_security_udf BooleanType())
 
+# Apply UDF to a Dataframe to flag insecure record
+secured_df = df.withColumn("is_secure", verify_security_udf(col("data_field")))
+
+# Filter or take action based om security verification
+secure_data = secured_df.filter(col("is secure") == True)
+```
