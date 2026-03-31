@@ -119,4 +119,37 @@ from pyspark.sql.functions import col
 
 def process_batch(df, batch_id): # Separate corrupt data from fresh corrupt_data = df.filter(col("order_id").isNull()) fresh_data = df.filter(col("order_id").isNotNull()) # Write corrupt data to a separate "protected" location if corrupt_data.count() > 0: corrupt_data.write.format("delta").mode("append").saveAsTable("protected_orders") # Proceed with MERGE for good data...
 ```
+# Github Action Deployment
+```
+# yaml
+on:
+workflow_dispatch
+inputs:
+environment:
+description:
+required:
+default:
+type:
+options:
+dev:
+staging:
+prod:
+```
+
+
+
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
 
