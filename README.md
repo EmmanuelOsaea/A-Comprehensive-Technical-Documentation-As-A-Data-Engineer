@@ -185,3 +185,9 @@ secured_df = df.withColumn("is_secure", verify_security_udf(col("data_field")))
 # Filter or take action based om security verification
 secure_data = secured_df.filter(col("is secure") == True)
 ```
+# Example SQL Query Optimization
+```
+-- Original query with subquery
+CREATE INDEX idx_orders_order_date ON orders(order_date) WHERE order_date >= '2026-05-05';
+
+```
