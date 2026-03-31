@@ -98,6 +98,8 @@ You meet with the marketing team to understand their need for customer segmentat
 
 # My Mode Of Operation 
 # Design & Implement Scalable Data pipelines using Apache Spark on Azure Databricks to process Batch and Streaming Data.
+# The Business logic (The "Gold" layer)
+
 ```
 python
 from pyspark.sql.window import Window
@@ -108,9 +110,13 @@ return df.withColumn("rolling_savings",
 F.sum("expenditure").over(Window.partitionBy("store_id")
 .orderBy(F.col("event_time").cast("long"))
 range between(-840, 0))) # 14-min window (840seconds)
-
-
-
-
+```
+# Error Handling (Dead Letter Queue)
 
 ```
+python
+from pyspark.sql.functions import col
+
+def process_batch(df, batch_id): # Separate corrupt data from fresh corrupt_data = df.filter(col("order_id").isNull()) fresh_data = df.filter(col("order_id").isNotNull()) # Write corrupt data to a separate "protected" location if corrupt_data.count() > 0: corrupt_data.write.format("delta").mode("append").saveAsTable("protected_orders") # Proceed with MERGE for good data...
+```
+
