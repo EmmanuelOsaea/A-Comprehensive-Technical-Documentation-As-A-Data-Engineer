@@ -123,17 +123,17 @@ def process_batch(df, batch_id): # Separate corrupt data from fresh corrupt_data
 ```
 # yaml
 on:
-workflow_dispatch
+workflow_dispatch:
 inputs:
 environment:
-description:
-required:
-default:
+description: env to deploy to
+required: true
+default: 'dev'
 type:
 options:
-dev:
-staging:
-prod:
+- dev
+- staging
+- prod
 ```
 
 
