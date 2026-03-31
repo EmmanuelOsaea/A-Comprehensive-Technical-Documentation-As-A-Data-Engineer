@@ -99,9 +99,15 @@ You meet with the marketing team to understand their need for customer segmentat
 # My Mode Of Operation 
 # Design & Implement Scalable Data pipelines using Apache Spark on Azure Databricks to process Batch and Streaming Data.
 ```
+python
+from pyspark.sql.window import Window
+import pyspark.sql.functions as F
 
-
-
+def calculate_rolling_savings(df):
+return df.withColumn("rolling_savings",
+F.sum("expenditure").over(Window.partitionBy("store_id")
+.orderBy(F.col("event_time").cast("long"))
+range between(-840, 0))) # 14-min window (840seconds)
 
 
 
