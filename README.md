@@ -122,7 +122,7 @@ def process_batch(df, batch_id): # Separate corrupt data from fresh corrupt_data
 # Github Action Deployment
 ```
 # yaml
-on:
+runs on: Linux 6.19
 workflow_dispatch:
 inputs:
 environment:
@@ -136,14 +136,31 @@ options:
 - prod
 ```
 
+# Sample PySpark Code For Data Recovery Streaming Job
+```
+from pyspark.sql.functions import col
 
+# Load backup data ADLS backup zone
+backup_df = spark.read.format("delta").load("abfss://backup@datalake.dfs.core.windows.net/employee_data/")
 
+# Load current curated data to compare
+curated_df = spark.read.format("delta").load("abfss://curated@datalake.dfs.core.windows.net/employee_data/")
 
+# Identify corrupted or missing records in curated data (example missing employee_data)
+corrupted_records = curated_df.filter(col("employee_id").isNull())
 
+# Recover corrupted records from backup
+recovered_records = backup_df.join(corrupted_records.select("record_id"), record_id, "inner")
 
+# Replace corrupted records in curated data with recovered records
+# Remove corrupted records from curated data
+clean_curated_df = curated_df.join(corrupted_records.select("record_id"), record_id, "left_anti")
 
+# Union clean curated data with recovered records
+final_df = clean_curated_df.union(recovered_records)
 
-
+# Overwrite curated data with recovered dataset
+final_df.write.format("delta").mode("overwrite").save("abfss://curated@datalake.dfs.core.windows.net/employee_data/")
 ```
 
 
