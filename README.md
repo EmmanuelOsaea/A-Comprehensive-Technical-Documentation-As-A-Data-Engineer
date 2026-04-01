@@ -208,6 +208,48 @@ GROUP BY ac.employee_id, ac.name
 ORDER BY total_expenditure DESC;
 ```
 
+# 2. NoSQL Schema Design and Querying (MongoDB)
+# Product Catalog with Reviews
+# Document Model:
+```
+{
+"_id": "productA",
+"name": "Edboots",
+"category": "Shoes",
+"price": 300.20,
+"reviews": [
+{
+"user_id": "user223",
+"rating": 4.8,
+"comment": "Great design! and comfort!"
+"date": "2026-05-05T8:00:00Z"
+},
+{
+"user_id": "user243",
+"rating": 5,
+"comment": "Wow! unwavering durability"
+"date": "2026-05-05T8:00:00Z"
+}
+]
+}
+
+```
+# Aggregation Query:
+```
+db.products.aggregate([
+{ $match: { category: "Shoes" } },
+{ $unwind: "$reviews" },
+{ $group: {
+ _id: "$_id",
+avg_rating: { $avg: "$reviews.rating"}
+review_count: { $sum: 1 }
+}
+},
+{ $sort: { avg_rating: -1 } },
+{ $limit: 5 }
+]);
+```
+
 # Example Concept for Complex Data Security Verification Using Python UDF
 This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
 
