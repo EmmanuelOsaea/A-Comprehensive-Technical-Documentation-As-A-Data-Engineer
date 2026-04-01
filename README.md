@@ -1,7 +1,5 @@
 # A-Comprehensive-Technical-Documentation-As-A-Data-Engineer
 
----
-
 # Practical Example Demonstrating Data Engineer Job Duties and Skills(Ai Examples)
 
 ## Context
