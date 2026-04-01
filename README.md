@@ -189,5 +189,18 @@ secure_data = secured_df.filter(col("is secure") == True)
 ```
 -- Original query with subquery
 CREATE INDEX idx_orders_order_date ON orders(order_date) WHERE order_date >= '2026-05-05';
-
+-- Use CTE to isolate active employees
+WITH ActiveEmployees AS (
+   SELECT employee_id, name
+    FROM employees
+    WHERE status = 'active'
+)
+SELECT ac.employee_id, ac.name, o.order_count
+FROM ActiveEmployees ac
+JOIN (
+SELECT employee_id, COUNT(*) AS order_count
+FROM orders
+WHERE order_date >= '2026-05-05'
+GROUP BY employee_id
+) o ON ac.employee_id = o.employee_id;
 ```
