@@ -260,7 +260,8 @@ spark = SparkSession.builder.appName("SalesPipeline").getorCreate()
 def process_sales_batch(df);
 # Separates corrupt data to dead letter queue
 
-
+# Process valid data(example aggregation)
+aggregated = valid_data.groupBy("store_id").sum("amount")
 
 # Save aggegrated results
 aggregrated.write.format("delta").mode("overwrite")
