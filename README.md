@@ -250,6 +250,33 @@ review_count: { $sum: 1 }
 ]);
 ```
 
+# 3. Python & PySpark: Scalable Data Pipeline with Error Handling
+# Scenario: Batch processing of Sales Info with Dead Letter Queue
+```
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+
+spark = SparkSession.builder.appName("SalesPipeline").getorCreate()
+def process_sales_batch(df);
+
+
+
+
+
+# Example usage
+sales_df = spark.read.format("csv").option("header", True).load("/mnet/raw/sales.data.csv")
+result_df = process_sales_batch(sales_df)
+result_df.show()
+```
+
+
+# 4. Azure Cloud Services: DataBricks + Data Lake + Data Factory Integration
+
+
+
+# 5. Github Actions for CI/CD Deployment of Databricks Jobs 
+
+
 # Example Concept for Complex Data Security Verification Using Python UDF
 This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
 
