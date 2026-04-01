@@ -251,13 +251,13 @@ review_count: { $sum: 1 }
 ```
 
 # 3. Python & PySpark: Scalable Data Pipeline with Error Handling
-# Scenario: Batch processing of Sales Info with Dead Letter Queue
+# Scenario: Batch processing of Distribution Info with Dead Letter Queue
 ```
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 
-spark = SparkSession.builder.appName("SalesPipeline").getorCreate()
-def process_sales_batch(df);
+spark = SparkSession.builder.appName("DistributionPipeline").getorCreate()
+def process_distributions_batch(df);
 # Separates corrupt data to dead letter queue
 
 # Process valid data(example aggregation)
@@ -269,16 +269,16 @@ aggregrated.write.format("delta").mode("overwrite")
 return aggregated
 
 # Example usage
-sales_df = spark.read.format("csv").option("header", True).load("/mnet/raw/sales.data.csv")
-result_df = process_sales_batch(sales_df)
+distributions_df = spark.read.format("csv").option("header", True).load("/mnet/raw/distributions.data.csv")
+result_df = process_distributions_batch(distrubutions_df)
 result_df.show()
 ```
 
 
 # 4. Azure Cloud Services: DataBricks + Data Lake + Data Factory Integration
 ```
-raw_path = "abfss://raw@datalake.dfs.core.windows.net/sales/"
-curated_path = "abfss://curated@datalake.dfs.core.windows.net/sales"
+raw_path = "abfss://raw@datalake.dfs.core.windows.net/distributions/"
+curated_path = "abfss://curated@datalake.dfs.core.windows.net/distributions"
 
 df = spark.read.format(delta).load(raw_path)
 df_clean = df.filter(col("order_id").isNotNull())
