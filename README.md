@@ -258,10 +258,14 @@ from pyspark.sql.functions import col
 
 spark = SparkSession.builder.appName("SalesPipeline").getorCreate()
 def process_sales_batch(df);
+# Separates corrupt data to dead letter queue
 
 
 
+# Save aggegrated results
+aggregrated.write.format("delta").mode("overwrite")
 
+return aggregated
 
 # Example usage
 sales_df = spark.read.format("csv").option("header", True).load("/mnet/raw/sales.data.csv")
@@ -271,11 +275,39 @@ result_df.show()
 
 
 # 4. Azure Cloud Services: DataBricks + Data Lake + Data Factory Integration
+```
+raw_path = "abfss://raw@datalake.dfs.core.windows.net/sales/"
+curated_path = "abfss://curated@datalake.dfs.core.windows.net/sales"
 
+df = spark.read.format(delta).load(raw_path)
+df_clean = df.filter(col("order_id").isNotNull())
 
-
+df_clean.write.format("delta").mode("overwrite").save(curated_path)
+```
 # 5. Github Actions for CI/CD Deployment of Databricks Jobs 
+```
+name: Deploy Databricks job 
 
+on:
+push:
+branches:
+-main
+
+jobs:
+deploy:
+runs-on: linux-latest
+
+steps: 
+ name: Checkout code
+ uses: actions/checkoutv1
+
+ name: deploy Databricks Job
+ uses: databricks/databricks-actions@v1
+ with:
+ databricks-host: ${{ secrets.DATABRICKS_HOST }}
+ databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+ job-json-file: './job-config.json'
+```
 
 # Example Concept for Complex Data Security Verification Using Python UDF
 This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
