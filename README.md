@@ -137,6 +137,9 @@ options:
 ```
 
 # Sample PySpark Code For Data Recovery Streaming Job
+These Pyspark code for data recovery demonstrates how backed up employees datas can be loaded in ADLS backup zone.
+Also, how to present curated data to compare loads and how to spot corrupted or missing records in curated data inorder to filter them. We can also discover ways we can remove and replace corrupted records in curated datas. And most importantly, merging clean curated datas together with recovered records.
+
 ```
 from pyspark.sql.functions import col
 
@@ -164,6 +167,8 @@ final_df.write.format("delta").mode("overwrite").save("abfss://curated@datalake.
 ```
 
 # Example Concept for Complex Data Security Verification Using Python UDF
+
+
 ```
 from pyspark.sql.functions import udf, col
 pyspark.sql.types  import BooleanType
@@ -185,7 +190,11 @@ secured_df = df.withColumn("is_secure", verify_security_udf(col("data_field")))
 # Filter or take action based om security verification
 secure_data = secured_df.filter(col("is secure") == True)
 ```
+
 # Example SQL Query Optimization
+This example illustrates the use of SQL query with subquery to identify the precise date of the order. Also CTE was used 
+to separate the active employees from the other employees.
+
 ```
 -- Original query with subquery
 CREATE INDEX idx_orders_order_date ON orders(order_date) WHERE order_date >= '2026-05-05';
@@ -204,3 +213,5 @@ WHERE order_date >= '2026-05-05'
 GROUP BY employee_id
 ) o ON ac.employee_id = o.employee_id;
 ```
+
+# NOTE: I researched for practical examples, inorder to have an idea of what my job entails and i brainstormed practical ideas which i verified before utilizing them.
