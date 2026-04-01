@@ -228,7 +228,7 @@ ORDER BY total_expenditure DESC;
 "user_id": "user243",
 "rating": 5,
 "comment": "Wow! unwavering durability"
-"date": "2026-05-05T8:00:00Z"
+"date": "2026-05-05T9:00:00Z"
 }
 ]
 }
@@ -256,7 +256,7 @@ review_count: { $sum: 1 }
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 
-spark = SparkSession.builder.appName("DistributionPipeline").getorCreate()
+spark = SparkSession.builder.appName("DistributionsPipeline").getorCreate()
 def process_distributions_batch(df);
 # Separates corrupt data to dead letter queue
 
@@ -264,7 +264,7 @@ def process_distributions_batch(df);
 aggregated = valid_data.groupBy("store_id").sum("amount")
 
 # Save aggegrated results
-aggregrated.write.format("delta").mode("overwrite")
+aggregrated.write.format("delta").mode("overwrite").save("/mnt/curated/distributions_aggregated")
 
 return aggregated
 
