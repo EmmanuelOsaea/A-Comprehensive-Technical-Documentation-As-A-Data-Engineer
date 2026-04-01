@@ -168,6 +168,36 @@ final_df = clean_curated_df.union(recovered_records)
 final_df.write.format("delta").mode("overwrite").save("abfss://curated@datalake.dfs.core.windows.net/employee_data/")
 ```
 
+# 1. Relational Database Schema Design and Optimization
+# Employee Sales Analytics 
+# Schema Design
+```
+CREATE TABLE employees (
+employee_id INT PRIMARY KEY,
+name VARCHAR(150),
+email VARCHAR(150),
+status VARCHAR(30)
+);
+
+-- Orders table 
+CREATE TABLE orders (
+order_id INT PRIMARY KEY,
+employee_id INT,
+order_date DATE,
+amount DECIMAL (15, 3),
+FOREIGN KEY (employee_id) REFRENCES employees (employee_id)
+);
+
+-- Index to optimize queries filtering recent orders
+CREATE INDEX idx_orders_order_date ON orders(order_date);
+```
+
+
+
+
+
+
+
 # Example Concept for Complex Data Security Verification Using Python UDF
 This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
 
@@ -215,5 +245,8 @@ WHERE order_date >= '2026-05-05'
 GROUP BY employee_id
 ) o ON ac.employee_id = o.employee_id;
 ```
+
+
+
 
 # NOTE: I researched for practical examples, inorder to have an idea of what my job entails and i brainstormed practical ideas which i verified before utilizing them.
