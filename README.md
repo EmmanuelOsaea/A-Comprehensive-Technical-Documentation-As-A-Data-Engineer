@@ -192,11 +192,21 @@ FOREIGN KEY (employee_id) REFRENCES employees (employee_id)
 CREATE INDEX idx_orders_order_date ON orders(order_date);
 ```
 
-
-
-
-
-
+# Optimized Query
+```
+-- Find active employees and their total order amount in tye last 24days 
+WITH ActiveEmployees AS (
+SELECT employee_id, name
+FROM employees
+WHERE status = 'active'
+)
+SELECT ac.employee_id, ac.name, SUM(o.amount) AS total_spent
+FROM ActiveEmployees ac
+JOIN orders o ON ac.employee_id = o.employee_id
+WHERE o.order_data >= CURRENT_DATE - INTERVAL '24 days'
+GROUP BY ac.employee_id, ac.name
+ORDER BY total_expenditure DESC;
+```
 
 # Example Concept for Complex Data Security Verification Using Python UDF
 This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
