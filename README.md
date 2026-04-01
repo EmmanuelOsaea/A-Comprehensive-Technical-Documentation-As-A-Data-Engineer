@@ -99,7 +99,7 @@ You meet with the marketing team to understand their need for customer segmentat
 # My Mode Of Operation 
 # Design & Implement Scalable Data pipelines using Apache Spark on Azure Databricks to process Batch and Streaming Data.
 # The Business logic (The "Gold" layer)
-
+This codes illustrates the calculation of rolling savings with the sum set to expenditure and the window range set to -840 or 14min. The display of the expenditure time-duration can be seen.
 ```
 python
 from pyspark.sql.window import Window
@@ -112,6 +112,7 @@ F.sum("expenditure").over(Window.partitionBy("store_id")
 range between(-840, 0))) # 14-min window (840seconds)
 ```
 # Error Handling (Dead Letter Queue)
+This error handling codes illustrates the separation of corrupt data from fresh datas. Also, a safe location for corrupt data was made.
 
 ```
 python
@@ -119,6 +120,7 @@ from pyspark.sql.functions import col
 
 def process_batch(df, batch_id): # Separate corrupt data from fresh corrupt_data = df.filter(col("order_id").isNull()) fresh_data = df.filter(col("order_id").isNotNull()) # Write corrupt data to a separate "protected" location if corrupt_data.count() > 0: corrupt_data.write.format("delta").mode("append").saveAsTable("protected_orders") # Proceed with MERGE for good data...
 ```
+
 # Github Action Deployment
 ```
 # yaml
@@ -167,7 +169,7 @@ final_df.write.format("delta").mode("overwrite").save("abfss://curated@datalake.
 ```
 
 # Example Concept for Complex Data Security Verification Using Python UDF
-
+This codes illustrates complex data security verification using python udf and booleantype inorder to spot disallowed keywords, identify unsafe records and ensure actions are taken based on security authentication.
 
 ```
 from pyspark.sql.functions import udf, col
@@ -187,13 +189,13 @@ verify_security_udf = udf(verify_data_security_udf BooleanType())
 # Apply UDF to a Dataframe to flag insecure record
 secured_df = df.withColumn("is_secure", verify_security_udf(col("data_field")))
 
-# Filter or take action based om security verification
+# Filter or take action based on security verification
 secure_data = secured_df.filter(col("is secure") == True)
 ```
 
 # Example SQL Query Optimization
 This example illustrates the use of SQL query with subquery to identify the precise date of the order. Also CTE was used 
-to separate the active employees from the other employees.
+to separate the active employees from other employees.
 
 ```
 -- Original query with subquery
